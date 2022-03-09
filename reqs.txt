@@ -24,3 +24,22 @@ be a constant or one of the following keywords: “mean”, “median” or
 “mode”.
 If we pass one of these keywords, we replace the empty values with the
 mean / median / mode of the rest of the elements of the column.
+
+QUESTION 2: Architecture
+We want to collect telemetry events sent by our cars and store them in a Data Lake.
+Design a solution to fulfill these requirements:
+- Connected car events will be consumed in real time from Kafka, which is
+deployed in Kubernetes.
+- We are interested in 3 Kafka topics: battery_level, fuel_level and mileage. Events
+from each topic have a different schema.
+- Sometimes we receive an event with incorrect data that does not match this
+schema. They must be discarded.
+- All the events have the field ''occurredOn”, which is the datetime when they
+occurred. Due to connectivity issues, it’s usual to have a delay between the
+“occurredOn” and when we can actually consume the event from Kafka.
+- It should be easy and fast to retrieve from the Data Lake the events selecting a
+specific topic and the specific datetime when they occurred (with minute
+granularity).
+- Since there is a high volume of data, the solution must be scalable.
+Make a diagram with your high-level architecture proposal to solve this problem. The
+diagram should show the needed components and the technology
