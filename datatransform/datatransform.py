@@ -1,6 +1,14 @@
 import numpy as np
 import pandas as pd
 from datetime import date, datetime
+import readconfig as rc
+
+path = rc.data['source']['path']
+dataset = rc.data['source']['dataset']
+format = rc.data['source']['format']
+
+print(path)
+
 
 df = pd.read_csv('repository/bookings.csv')
 
@@ -51,9 +59,9 @@ def fill_empty_values(df_in, col, value):
         value = df_in[col].mode()[0]
         # Note: mode returns a Series instead of a single number. Since no further criteria was given, we picked the first result.
     df_in[col] = df_in[col].replace(np.NAN, value, regex=True)
-    print(df_in['km'])
+    print(df_in['user_name'])
 
 
 birthdate_to_date(df, 'user_birthdate')
 hot_encoding(df, 'vehicle_category')
-fill_empty_values(df, 'km', 'mode')
+fill_empty_values(df, 'user_name', 'Dwayne')
