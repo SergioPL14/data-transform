@@ -10,7 +10,7 @@ def read(fname):
 requirements = []
 
 setup(
-    name = "My App",
+    name = "Data Transform",
     version = ".".join(map(str, __version__)),
     description = "",
     long_description = read('README.rst'),
@@ -27,8 +27,7 @@ setup(
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        #'Framework :: Django',
+        'Programming Language :: Python'
     ],
     install_requires = requirements,
     tests_require = [],
