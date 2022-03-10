@@ -28,7 +28,6 @@ def calculate_age(birthdate):
 # creates a new column with the result.
 def birthdate_to_age(df_in, col, new_col):
     df_in[new_col] = df_in[col].apply(calculate_age)
-    print(df_in)
 
 
 # Given a categorical column with n possible values, it
@@ -40,11 +39,8 @@ def hot_encoding(df_in, col):
     new_cols = df_in[col].unique()
     print(new_cols)
     for new_col in new_cols:
-        # print(df_in[col])
-        # df_in['is_' + col] = df.apply(lambda row: bin_value(row))
         df_in.loc[df_in[col] == new_col, 'is_' + new_col] = 1
-        df['is_' + new_col] = df['is_' + new_col].fillna(0)
-    print(df_in)
+        df_in['is_' + new_col] = df_in['is_' + new_col].fillna(0)
 
 
 # It replaces the empty values of a column with another
@@ -61,12 +57,12 @@ def fill_empty_values(df_in, col, value):
         value = df_in[col].mode()[0]
         # Note: mode returns a Series instead of a single number. Since no further criteria was given, we picked the first result.
     df_in[col] = df_in[col].replace(np.NAN, value, regex=True)
-    print(df_in[col])
 
 
 # main function
-def transformation():
-    # function_params1 = rc.data['transforms'][0]['fields']
+def main():
+    df = pd.read_csv(rc.data['source']['path'] + rc.data['source']['dataset'] + '.' + rc.data['source']['format'])
+
     for i in range(0, len(rc.data['transforms'])):
         for j in range(0, len(rc.data['transforms'][i]['fields'])):
             function_to_run = rc.data['transforms'][i]['transform']
@@ -79,11 +75,12 @@ def transformation():
                 exec_function(function_to_run, df, rc.data['transforms'][i]['fields'][j]['field'],
                               rc.data['transforms'][i]['fields'][j]['value'])
 
+    if rc.data['sink']['format'] == 'jsonl':
+        df.to_json(rc.data['sink']['path'] + rc.data['sink']['dataset'] + '.' + rc.data['sink']['format'],
+                   orient='records', lines=True)
+    elif rc.data['sink']['format'] == 'parquet':
+        df.to_parquet(rc.data['sink']['path'] + rc.data['sink']['dataset'] + '.' + rc.data['sink']['format'])
 
-df = pd.read_csv(rc.data['source']['path'] + rc.data['source']['dataset'] + '.' + rc.data['source']['format'])
-transformation()
 
-if rc.data['sink']['format'] == 'jsonl':
-    df.to_json(rc.data['sink']['path'] + rc.data['sink']['dataset'] + '.' + rc.data['sink']['format'], orient='records', lines=True)
-elif rc.data['sink']['format'] == 'parquet':
-    df.to_parquet(rc.data['sink']['path'] + rc.data['sink']['dataset'] + '.' + rc.data['sink']['format'])
+if __name__ == "__main__":
+    main()
