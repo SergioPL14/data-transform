@@ -24,7 +24,9 @@ PROGRAMMING
 		- transf2 
 		- transf3 
 	2. Managing inputs
-	3. Docker image 	
+	3. Docker image
+	    https://www.geeksforgeeks.org/how-to-run-a-python-script-using-docker/
+
 ########################################################################################
 
 ARCHITECTURE
