@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from datetime import date, datetime
-import readconfig as rc
+import datatransform.readconfig as rc
 
 
 # Helper function to run the wanted transform depending on config file
@@ -37,7 +37,6 @@ def birthdate_to_age(df_in, col, new_col):
 # value of the original column.
 def hot_encoding(df_in, col):
     new_cols = df_in[col].unique()
-    print(new_cols)
     for new_col in new_cols:
         df_in.loc[df_in[col] == new_col, 'is_' + new_col] = 1
         df_in['is_' + new_col] = df_in['is_' + new_col].fillna(0)
