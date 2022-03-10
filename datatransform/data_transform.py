@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from datetime import date, datetime
-import datatransform.readconfig as rc
+import datatransform.read_config as rc
 
 
 # Helper function to run the wanted transform depending on config file
