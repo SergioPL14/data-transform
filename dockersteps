@@ -1,6 +1,6 @@
 #### BUILD CONTAINER
 
-docker build -t datatransform Documents/git/data-transform/
+docker build -t datatransform C:/Users/SergioPina/Documents/git/data-transform
 
 
 #### RUN APP

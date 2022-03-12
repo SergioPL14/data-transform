@@ -16,7 +16,7 @@ COPY . /usr/src/app/
 #Install requirements dependencies
 RUN pip install -r requirements.txt
 
-#CMD instruction should be used to run the software
-#contained by your image, along with any arguments.
+# RUN chmod +x inputs/cleaning_json
 
-CMD [ "python", "datatransform/data_transform.py"]
+#CMD instruction to run the software
+CMD [ "python", "datatransform/data_transform.py", "inputs/cleaning.json"]

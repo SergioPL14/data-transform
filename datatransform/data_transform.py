@@ -84,7 +84,7 @@ def main():
     print(ROOT_DIR)
     print(sys.argv[1])
     config = read_config()
-    df = pd.read_csv(config['source']['path'] + '/' + config['source']['dataset'] + '.' + config['source']['format'])
+    df = pd.read_csv(config['source']['path'] + config['source']['dataset'] + '.' + config['source']['format'])
 
     for i in range(0, len(config['transforms'])):
         for j in range(0, len(config['transforms'][i]['fields'])):
@@ -99,11 +99,11 @@ def main():
                               config['transforms'][i]['fields'][j]['value'])
 
     if config['sink']['format'] == 'jsonl':
-        df.to_json(config['sink']['path'] + '/' + config['sink']['dataset'] + '.' + config['sink']['format'],
+        df.to_json(config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'],
                    orient='records', lines=True)
     elif config['sink']['format'] == 'parquet':
         df.to_parquet(
-            config['sink']['path'] + '/' + config['sink']['dataset'] + '.' + config['sink']['format'])
+            config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
 
 
 if __name__ == "__main__":
