@@ -1,6 +1,6 @@
 {
   "source": {
-    "path": "inputs/",
+    "path": "resources/inputs/",
     "dataset": "bookings",
     "format": "csv"
   },
@@ -26,7 +26,7 @@
     }
   ],
   "sink": {
-    "path": "outputs/",
+    "path": "resources/outputs/",
     "dataset": "bookings_cleaned",
     "format": "jsonl"
   }

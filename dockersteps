@@ -3,6 +3,6 @@
 docker build -t datatransform C:/Users/SergioPina/Documents/git/data-transform
 
 
-#### RUN APP
+#### RUN APP BINDING VOLUME TO INNER CONTAINER DIRECTORY
 
-docker run datatransform
+docker run -d -v [path_to_local_directory]:/resources -t datatransform:latest

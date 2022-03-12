@@ -1,6 +1,6 @@
 import unittest
 
-from datatransform.data_transform import *
+from data_transform import *
 
 
 class TestCase(unittest.TestCase):
