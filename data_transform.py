@@ -13,12 +13,12 @@ ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '')).replace
 # Helper function to read config
 def read_config():
     # Opening JSON file
-    # f = open(ROOT_DIR + '/inputs/clean_bookings.json')
     f = open(sys.argv[1])
 
     # returns JSON object as
     # a dictionary
     data: object = json.load(f)
+    print('Config read from: ' + sys.argv[1] + '.')
 
     # Closing file
     f.close()
@@ -81,11 +81,9 @@ def fill_empty_values(df_in, col, value):
 
 # main function
 def main():
-    print(ROOT_DIR)
-    print(sys.argv[1])
     config = read_config()
     df = pd.read_csv('./resources/' + config['source']['path'] + config['source']['dataset'] + '.' + config['source']['format'])
-
+    print('CSV file ' + config['source']['dataset'] + '.' + config['source']['format'] + ' read.')
     for i in range(0, len(config['transforms'])):
         for j in range(0, len(config['transforms'][i]['fields'])):
             function_to_run = config['transforms'][i]['transform']
@@ -99,12 +97,15 @@ def main():
                               config['transforms'][i]['fields'][j]['value'])
 
     if config['sink']['format'] == 'jsonl':
-        print('./resources/' + config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
+        print('Converting to JSONL.')
         df.to_json('./resources/' + config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'],
                    orient='records', lines=True)
+        print('Succeeded.')
     elif config['sink']['format'] == 'parquet':
+        print('Converting to Parquet')
         df.to_parquet('./resources/' +
             config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
+        print('Succeded.')
 
 
 if __name__ == "__main__":
