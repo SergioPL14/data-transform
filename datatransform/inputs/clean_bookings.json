@@ -28,6 +28,6 @@
   "sink": {
     "path": "outputs/",
     "dataset": "bookings_cleaned",
-    "format": "parquet"
+    "format": "jsonl"
   }
 }

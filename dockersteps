@@ -1,0 +1,8 @@
+#### BUILD CONTAINER
+
+docker build -t datatransform Documents/git/data-transform/
+
+
+#### RUN APP
+
+docker run datatransform

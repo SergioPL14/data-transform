@@ -1,8 +1,20 @@
 import numpy as np
 import pandas as pd
 from datetime import date, datetime
-import datatransform.read_config as rc
+import json
 
+#Helper function to read config
+def read_config():
+    # Opening JSON file
+    f = open('inputs/clean_bookings.json')
+
+    # returns JSON object as
+    # a dictionary
+    data: object = json.load(f)
+
+    # Closing file
+    f.close()
+    return data
 
 # Helper function to run the wanted transform depending on config file
 def exec_function(input_key, *params):
@@ -60,25 +72,26 @@ def fill_empty_values(df_in, col, value):
 
 # main function
 def main():
-    df = pd.read_csv(rc.data['source']['path'] + rc.data['source']['dataset'] + '.' + rc.data['source']['format'])
+    config = read_config()
+    df = pd.read_csv(config['source']['path'] + config['source']['dataset'] + '.' + config['source']['format'])
 
-    for i in range(0, len(rc.data['transforms'])):
-        for j in range(0, len(rc.data['transforms'][i]['fields'])):
-            function_to_run = rc.data['transforms'][i]['transform']
+    for i in range(0, len(config['transforms'])):
+        for j in range(0, len(config['transforms'][i]['fields'])):
+            function_to_run = config['transforms'][i]['transform']
             if function_to_run == 'birthdate_to_age':
-                exec_function(function_to_run, df, rc.data['transforms'][i]['fields'][j]['field'],
-                              rc.data['transforms'][i]['fields'][j]['new_field'])
+                exec_function(function_to_run, df, config['transforms'][i]['fields'][j]['field'],
+                              config['transforms'][i]['fields'][j]['new_field'])
             elif function_to_run == 'hot_encoding':
-                exec_function(function_to_run, df, rc.data['transforms'][i]['fields'][j])
+                exec_function(function_to_run, df, config['transforms'][i]['fields'][j])
             elif function_to_run == 'fill_empty_values':
-                exec_function(function_to_run, df, rc.data['transforms'][i]['fields'][j]['field'],
-                              rc.data['transforms'][i]['fields'][j]['value'])
+                exec_function(function_to_run, df, config['transforms'][i]['fields'][j]['field'],
+                              config['transforms'][i]['fields'][j]['value'])
 
-    if rc.data['sink']['format'] == 'jsonl':
-        df.to_json(rc.data['sink']['path'] + rc.data['sink']['dataset'] + '.' + rc.data['sink']['format'],
+    if config['sink']['format'] == 'jsonl':
+        df.to_json(config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'],
                    orient='records', lines=True)
-    elif rc.data['sink']['format'] == 'parquet':
-        df.to_parquet(rc.data['sink']['path'] + rc.data['sink']['dataset'] + '.' + rc.data['sink']['format'])
+    elif config['sink']['format'] == 'parquet':
+        df.to_parquet(config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
 
 
 if __name__ == "__main__":
