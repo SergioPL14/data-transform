@@ -2,11 +2,15 @@ import numpy as np
 import pandas as pd
 from datetime import date, datetime
 import json
+import os
+
+# Variable that contains the root directory
+ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '..')).replace('\\', '/')
 
 #Helper function to read config
 def read_config():
     # Opening JSON file
-    f = open('inputs/clean_bookings.json')
+    f = open(ROOT_DIR + '/inputs/clean_bookings.json')
 
     # returns JSON object as
     # a dictionary
@@ -72,8 +76,9 @@ def fill_empty_values(df_in, col, value):
 
 # main function
 def main():
+    print(ROOT_DIR)
     config = read_config()
-    df = pd.read_csv(config['source']['path'] + config['source']['dataset'] + '.' + config['source']['format'])
+    df = pd.read_csv(ROOT_DIR + '/' + config['source']['path'] + config['source']['dataset'] + '.' + config['source']['format'])
 
     for i in range(0, len(config['transforms'])):
         for j in range(0, len(config['transforms'][i]['fields'])):
@@ -88,10 +93,10 @@ def main():
                               config['transforms'][i]['fields'][j]['value'])
 
     if config['sink']['format'] == 'jsonl':
-        df.to_json(config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'],
+        df.to_json(ROOT_DIR + '/' + config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'],
                    orient='records', lines=True)
     elif config['sink']['format'] == 'parquet':
-        df.to_parquet(config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
+        df.to_parquet(ROOT_DIR + '/' + config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
 
 
 if __name__ == "__main__":
