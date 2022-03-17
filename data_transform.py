@@ -6,9 +6,6 @@ from datetime import date, datetime
 import json
 import os
 
-# Variable that contains the root directory
-ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), '')).replace('\\', '/')
-
 
 # Helper function to read config
 def read_config():
@@ -105,7 +102,7 @@ def main():
         print('Converting to Parquet')
         df.to_parquet('./resources/' +
             config['sink']['path'] + config['sink']['dataset'] + '.' + config['sink']['format'])
-        print('Succeded.')
+        print('Succeeded.')
 
 
 if __name__ == "__main__":
